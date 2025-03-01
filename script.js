@@ -150,6 +150,10 @@ function stopCamera() {
 
 // Function to start the countdown
 function startCountdown(seconds, callback) {
+    // Create audio elements for countdown and capture
+    const tickSound = new Audio('sounds/tick.mp3');
+    const captureSound = new Audio('sounds/camera-shutter.mp3');
+    
     if (countdownInterval) {
         clearInterval(countdownInterval);
     }
@@ -159,18 +163,25 @@ function startCountdown(seconds, callback) {
     
     let remainingSeconds = seconds;
     
+    // Play tick sound immediately for first number
+    tickSound.play();
+    
     countdownInterval = setInterval(() => {
         remainingSeconds--;
         
         if (remainingSeconds <= 0) {
             clearInterval(countdownInterval);
             countdownElement.classList.add('hidden');
+            // Play capture sound
+            captureSound.play();
             
             if (callback) {
                 callback();
             }
         } else {
             countdownElement.textContent = remainingSeconds;
+            // Play tick sound for each number
+            tickSound.play();
         }
     }, 1000);
 }
